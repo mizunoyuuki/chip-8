@@ -1,5 +1,8 @@
 #include "chip8.h"
 #include <string.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 uint8_t fontset[80] = {
 	0xF0, 0x90, 0x90, 0x90, 0xF0, // 0
@@ -30,4 +33,33 @@ void chip8_init(Chip8 *chip8){
 	for (int i = 0; i < 80; ++i){
 		chip8->memory[i] = fontset[i];
 	}
+}
+
+int read_rom(const char *filename){
+	// ROMを[バイナリ読み込みモード]"rb"で開く
+	FILE *rom_file = fopen(filename, "rb");
+
+	if (rom_file == NULL){
+		printf("error: ROM file '%s' cant open\n", filename);
+		return 1;
+	}
+
+	// ファイルサイズを調べる
+	fseek(rom_file, 0, SEEK_END);
+	long rom_size = ftell(rom_file);
+	fseek(rom_file, 0, SEEK_SET);  // ファイルの読み取り位置を先頭に戻す
+	
+	if (rom_size > (4096 - 512)) {
+		fprintf(stderr, "rom is too big\n");
+		fclose(rom_file);
+		return 1;
+	}
+
+	fread(&chip8.memory[0x200], 1, rom_size, rom_file);
+	fclose(rom_file);
+
+	printf("read rom, succeed!\n");
+
+	return 0;
+
 }

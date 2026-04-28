@@ -1,5 +1,5 @@
 #ifndef CHIP8_H
-#define CHIP_H
+#define CHIP8_H
 
 #include<stdint.h>
 
@@ -22,5 +22,8 @@ struct Chip8 {
 };
 
 extern void chip8_init(Chip8*);
+extern int read_rom(const char *);
+
+extern Chip8 chip8;
 
 #endif
