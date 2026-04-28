@@ -23,6 +23,7 @@ struct Chip8 {
 
 extern void chip8_init(Chip8*);
 extern int read_rom(const char *);
+extern void execute();
 
 extern Chip8 chip8;
 

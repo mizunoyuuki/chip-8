@@ -63,3 +63,8 @@ int read_rom(const char *filename){
 	return 0;
 
 }
+
+// bit処理のオンパレード
+void execute(){
+	return;
+}

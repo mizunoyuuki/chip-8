@@ -27,7 +27,7 @@ int main(int argc, char *argv[]){
 
 	// メモリに読み込んだプログラムをエミュレートする
 	for (;;){
-		chip8_emulate_cycle(&chip8);
+		execute();
 	}
 
 	return 0;
