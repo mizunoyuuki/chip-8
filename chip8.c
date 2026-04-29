@@ -189,7 +189,31 @@ void execute(){
 		case 0xC000:
 			chip8.V[x] = (rand() %256) & kk;
 			break;
+		case 0xD000: {
+				     uint8_t y    = (instruction & 0x00F0) >> 4;
+      				     uint8_t n    = instruction & 0x000F;
+      				     uint8_t xpos = chip8.V[x] % 64;  // 画面端で折り返し
+      			             uint8_t ypos = chip8.V[y] % 32;
 
+      				     chip8.V[0xF] = 0;  // 衝突フラグをリセット
+
+      				     for (int row = 0; row < n; row++) {
+					     uint8_t sprite = chip8.memory[chip8.I + row];  // 1行分(8bit)
+
+          				     for (int col = 0; col < 8; col++) {
+						     // スプライトの各ビットを左から順にチェック
+              					     if (sprite & (0x80 >> col)) {
+                  				     int px = (xpos + col) % 64;
+                  				     int py = (ypos + row) % 32;
+                  				     int idx = py * 64 + px;
+						     // XOR描画: すでに点灯していたら衝突フラグを立てる
+                  				     if (chip8.display[idx]) chip8.V[0xF] = 1;
+						     chip8.display[idx] ^= 1;
+						     }
+					     }
+				     }
+				     break;
+			     }
 		default:
 			printf("invalid instruction\n 0x%04X\n", instruction);
 	}
