@@ -96,6 +96,18 @@ void execute(){
 	// 7xkk => ADD Vx, byte    :レジスタV[x]に値kkを足す
 	// 1nnn => JP addr         :アドレスnnnにジャンプする
 	switch (op_type){
+		// call命令
+		case 0x0000:
+			if (instruction == 0x00EE){
+				chip8.sp--;
+				chip8.pc = chip8.stack[chip8.sp];
+			}
+			break;
+		case 0x2000:
+			chip8.stack[chip8.sp] = chip8.pc;
+			chip8.sp++;
+			chip8.pc = nnn;
+			break;
 		case 0x6000:
 			chip8.V[x] = kk;
 			break;
@@ -105,6 +117,10 @@ void execute(){
 		case 0x1000:
 			chip8.pc = nnn;
 			break;
+		case 0xA000:
+			chip8.I = nnn;
+			break;
+
 		default:
 			printf("invalid instruction\n 0x%04X\n", instruction);
 	}
