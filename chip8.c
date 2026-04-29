@@ -183,6 +183,13 @@ void execute(){
 			chip8.I = nnn;
 			break;
 
+		case 0xB000:
+			chip8.pc = chip8.V[0] + nnn;
+			break;
+		case 0xC000:
+			chip8.V[x] = (rand() %256) & kk;
+			break;
+
 		default:
 			printf("invalid instruction\n 0x%04X\n", instruction);
 	}
