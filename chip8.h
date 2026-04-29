@@ -21,12 +21,20 @@ struct Chip8 {
 	uint8_t display[64*32];
 };
 
+// fetchしたデータの入れる場所
+extern uint16_t instruction;
+
 extern void chip8_init(Chip8*);
 extern int read_rom(const char *);
 extern void fetch();
 extern void decode();
 extern void execute();
 extern void store();
+
+extern uint16_t op_type;
+extern uint8_t x;
+extern uint8_t kk;
+extern uint16_t nnn;
 
 extern Chip8 chip8;
 

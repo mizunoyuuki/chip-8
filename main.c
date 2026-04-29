@@ -31,6 +31,8 @@ int main(int argc, char *argv[]){
 		decode();
 		execute();
 		store();
+
+		printf("V0: %d, V1: %d, x: %X, kk: 0x%02X\n", chip8.V[0], chip8.V[1], x, kk);
 	}
 
 	return 0;

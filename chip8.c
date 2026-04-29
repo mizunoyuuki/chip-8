@@ -63,17 +63,51 @@ int read_rom(const char *filename){
 	return 0;
 }
 
+uint16_t instruction;
+
 // bit処理のオンパレード
 void fetch(){
+	// pcから2バイトの命令を取ってくる
+	// bitマスクとかビットシフトとかを掛け合わせる
+	instruction = ((uint16_t )chip8.memory[chip8.pc] << 8) | (uint16_t) chip8.memory[chip8.pc+1];
+	chip8.pc += 2;
+
 	return;
 }
 
+uint16_t op_type;
+uint8_t x;
+uint8_t kk;
+uint16_t nnn;
+
 void decode(){
+	// instructionをパースして、決まったレジスタにデータを入れる
+        op_type = instruction & 0xF000;
+	x = (instruction & 0x0F00) >> 8;
+	kk = instruction & 0x00FF;
+	nnn = instruction & 0x0FFF;
+
 	return;
 }
 
 
 void execute(){
+	// 6xkk => LD Vx, byte     :レジスタV[x]に値kkを代入する
+	// 7xkk => ADD Vx, byte    :レジスタV[x]に値kkを足す
+	// 1nnn => JP addr         :アドレスnnnにジャンプする
+	switch (op_type){
+		case 0x6000:
+			chip8.V[x] = kk;
+			break;
+		case 0x7000:
+			chip8.V[x] = chip8.V[x] + kk;
+			break;
+		case 0x1000:
+			chip8.pc = nnn;
+			break;
+		default:
+			printf("invalid instruction\n 0x%04X\n", instruction);
+	}
 	return;
 }
 
