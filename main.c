@@ -27,7 +27,10 @@ int main(int argc, char *argv[]){
 
 	// メモリに読み込んだプログラムをエミュレートする
 	for (;;){
+		fetch();
+		decode();
 		execute();
+		store();
 	}
 
 	return 0;

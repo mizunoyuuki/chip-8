@@ -61,10 +61,22 @@ int read_rom(const char *filename){
 	printf("read rom, succeed!\n");
 
 	return 0;
-
 }
 
 // bit処理のオンパレード
+void fetch(){
+	return;
+}
+
+void decode(){
+	return;
+}
+
+
 void execute(){
+	return;
+}
+
+void store(){
 	return;
 }
