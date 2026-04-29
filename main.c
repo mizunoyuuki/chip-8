@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
+#include <SDL2/SDL.h>
 #include "chip8.h"
 
 Chip8 chip8;
