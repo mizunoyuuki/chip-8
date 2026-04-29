@@ -1,0 +1,20 @@
+### dpkgとは、
+
+Ubuntuのシステム管理周り
+
+dpkg (Debian Package Manager)は、UbuntuやDebian系のLinuxにおいて、ソフトウェアをインストールしたり、削除したりするための「一番根幹にあるシステム」
+
+普段は、apt install ** と実行するが、
+aptは、人間が使いやすいように作られたドライバであり、裏で実際にファイルを配置したり設定をしているのがdpkg
+
+
+インストールした後には、以下のような表示になる。
+
+
+ubuntu@ip-172-31-33-246:~/chip8(master)$ dpkg -l libsdl2-dev
+Desired=Unknown/Install/Remove/Purge/Hold
+| Status=Not/Inst/Conf-files/Unpacked/halF-conf/Half-inst/trig-aWait/Trig-pend
+|/ Err?=(none)/Reinst-required (Status,Err: uppercase=bad)
+||/ Name              Version                Architecture Description
++++-=================-======================-============-==========================================
+ii  libsdl2-dev:amd64 2.30.0+dfsg-1ubuntu3.1 amd64        Simple DirectMedia Layer development files
