@@ -101,6 +101,8 @@ void execute(){
 			if (instruction == 0x00EE){
 				chip8.sp--;
 				chip8.pc = chip8.stack[chip8.sp];
+			} else if (instruction == 0x00E0) {
+				memset(chip8.display, 0, sizeof(chip8.display));
 			}
 			break;
 		case 0x2000:
