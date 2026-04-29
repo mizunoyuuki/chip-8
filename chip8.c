@@ -110,11 +110,71 @@ void execute(){
 			chip8.sp++;
 			chip8.pc = nnn;
 			break;
+		case 0x3000:
+			if (chip8.V[x] == kk) chip8.pc += 2;
+			break;
+		case 0x4000:
+			if (chip8.V[x] != kk) chip8.pc += 2;
+			break;
+		case 0x5000:
+			{
+				uint8_t y = (instruction & 0x00F0) >> 4;
+				if (chip8.V[x] == chip8.V[y]){
+					chip8.pc += 2;
+				}
+			}
+			break;
 		case 0x6000:
 			chip8.V[x] = kk;
 			break;
 		case 0x7000:
 			chip8.V[x] = chip8.V[x] + kk;
+			break;
+		case 0x8000:
+			     {
+				     uint8_t y = (instruction & 0x00F0) >> 4;
+				     uint8_t n = instruction & 0x000F;
+				     switch (n) {
+					     case 0x0: chip8.V[x]  = chip8.V[y]; break;               // LD  Vx, Vy
+                                             case 0x1: chip8.V[x] |= chip8.V[y]; break;               // OR  Vx, Vy
+                                             case 0x2: chip8.V[x] &= chip8.V[y]; break;               // AND Vx, Vy
+                                             case 0x3: chip8.V[x] ^= chip8.V[y]; break;               // XOR Vx, Vy
+                                             case 0x4: {                                                // ADD Vx, Vy (キャリーあり)
+                                                     uint16_t sum = chip8.V[x] + chip8.V[y];
+						     chip8.V[0xF] = sum > 0xFF ? 1 : 0;
+                                                     chip8.V[x] = sum & 0xFF;
+                                                     break;
+                                             }
+                                             case 0x5: {                                                // SUB Vx, Vy
+                                                     chip8.V[0xF] = chip8.V[x] > chip8.V[y] ? 1 : 0;
+                                                     chip8.V[x] -= chip8.V[y];
+                                                     break;
+                                             }
+                                             case 0x6: {                                                // SHR Vx
+                                                     chip8.V[0xF] = chip8.V[x] & 0x1;
+						     chip8.V[x] >>= 1;
+                                                     break;
+                                             }
+					     case 0x7: {                                                // SUBN Vx, Vy
+                                                     chip8.V[0xF] = chip8.V[y] > chip8.V[x] ? 1 : 0;
+                                                     chip8.V[x] = chip8.V[y] - chip8.V[x];
+                                                     break;
+                                             }
+                                             case 0xE: {                                                // SHL Vx
+                                                     chip8.V[0xF] = (chip8.V[x] >> 7) & 0x1;
+                                                     chip8.V[x] <<= 1;
+                                                     break;
+                                             }
+				     }
+			     }
+			     break;
+		case 0x9000:
+			{
+				uint8_t y = (instruction & 0x00F0) >> 4;
+				if (chip8.V[x] != chip8.V[y]){
+					chip8.pc += 2;
+				}
+			}
 			break;
 		case 0x1000:
 			chip8.pc = nnn;
